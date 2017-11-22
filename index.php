@@ -9,6 +9,7 @@ try {
         $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
 
         $insert = $conn->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+	    //bindparam is used for more security so that hacker can't find what the actual name I am using for every data
         $insert->bindParam(':name',$name);
         $insert->bindParam(':email',$email);
         $insert->bindParam(':password',$password);
