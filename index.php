@@ -6,14 +6,14 @@ try {
     if(isset($_POST['register'])){
     	$name = $_POST['name'];
         $email = $_POST['email'];
-        $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+        $password = $_POST['password'];
 
         $insert = $conn->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
-	    //bindparam is used for more security so that hacker can't find what the actual name I am using for every data
         $insert->bindParam(':name',$name);
         $insert->bindParam(':email',$email);
         $insert->bindParam(':password',$password);
         $insert->execute();
+        $_SESSION['message'] = "Successfully Registered";
     }
     elseif(isset($_POST['loginsubmit'])){
         $email = $_POST['email'];
@@ -58,6 +58,13 @@ catch(PDOException $e)
     </style>
 </head>
 <body>
+
+    <?php 
+    if(isset($_SESSION['message'])){
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+    } 
+    ?>
 
 	<div id="regi"><h1>Sign Up</h1><form method="post">
 		
